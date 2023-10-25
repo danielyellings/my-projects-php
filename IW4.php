@@ -86,16 +86,57 @@
 В качестве примера рассмотрим шестизначное число:
 132722 = 13(n) - 2(c) - 7(h) - 22(w) = nchw */
 
-$number = 8187673120;
-$englishAlphabet = 'abcdefghijklmnopqrstuvwxyz';
+// $number = 8187673120;
+// $englishAlphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-$numberString = strval($number);
-$result = '';
-for ($i=0; $i<strlen($numberString); $i++) {
-    $currentDigit = intval($numberString[$i]);
-    if ($currentDigit > 0 && $currentDigit <= 26) {
-        $result .= $englishAlphabet[$currentDigit - 1];
+// $numberString = strval($number);
+// $result = '';
+// for ($i=0; $i<strlen($numberString); $i++) {
+//     $currentDigit = intval($numberString[$i]);
+//     if ($currentDigit > 0 && $currentDigit <= 26) {
+//         $result .= $englishAlphabet[$currentDigit - 1];
+//     }
+// }
+
+// echo $result;
+
+/*Задача 5. Массив случайных строк.
+Собрать массив $arr из 10 элементов, каждый из которых представляет из себя строку из случайных символов латинского алфавита. 
+И далее необходимо:
+Заменить все символы во всех элементах массива $arr  на их порядковые номера латинского алфавита (bac - 102).
+Собрать сумму всех цифр в массив $sum.
+В массиве $sum каждое число преобразовать в строки по следующему сценарию: сначала подбирается соответствующий символ под двузначный номер если такое возможно, далее под однозначный номер. К примеру:
+132722 = 13(n) - 2(c) - 7(h) - 22(w) = nchw
+Объединить все полученные строки массива $sum в одну единую строку. */
+
+$arr = [];
+$alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+for ($i = 0; $i < 10; $i++) {
+    $randomString = '';
+    for ($j = 0; $j < 3; $j++) {
+        $randomIndex = rand(0, strlen($alphabet) - 1);
+        $randomString .= $alphabet[$randomIndex];
     }
+    $arr[] = $randomString;
+}
+$letterToNumber = array(
+    'a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5, 'f' => 6, 'g' => 7, 'h' => 8, 'i' => 9, 'j' => 10,
+    'k' => 11, 'l' => 12, 'm' => 13, 'n' => 14, 'o' => 15, 'p' => 16, 'q' => 17, 'r' => 18, 's' => 19, 't' => 20,
+    'u' => 21, 'v' => 22, 'w' => 23, 'x' => 24, 'y' => 25, 'z' => 26
+);
+
+$sum = [];
+
+foreach ($arr as $string) {
+    $stringSum = '';
+    for ($i = 0; $i < strlen($string); $i++) {
+        $letter = $string[$i];
+        $letterNumber = $letterToNumber[$letter];
+        $stringSum .= $letterNumber;
+    }
+    $sum[] = $stringSum;
 }
 
-echo $result;
+print_r($arr);
+print_r($sum);
