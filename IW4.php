@@ -109,34 +109,87 @@
 132722 = 13(n) - 2(c) - 7(h) - 22(w) = nchw
 Объединить все полученные строки массива $sum в одну единую строку. */
 
-$arr = [];
-$alphabet = 'abcdefghijklmnopqrstuvwxyz';
+// $arr = [];
+// $alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+// for ($i = 0; $i < 10; $i++) {
+//     $randomString = '';
+//     for ($j = 0; $j < 3; $j++) {
+//         $randomIndex = rand(0, strlen($alphabet) - 1);
+//         $randomString .= $alphabet[$randomIndex];
+//     }
+//     $arr[] = $randomString;
+// }
+// $letterToNumber = array(
+//     'a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5, 'f' => 6, 'g' => 7, 'h' => 8, 'i' => 9, 'j' => 10,
+//     'k' => 11, 'l' => 12, 'm' => 13, 'n' => 14, 'o' => 15, 'p' => 16, 'q' => 17, 'r' => 18, 's' => 19, 't' => 20,
+//     'u' => 21, 'v' => 22, 'w' => 23, 'x' => 24, 'y' => 25, 'z' => 26
+// );
+
+// $sum = [];
+
+// foreach ($arr as $string) {
+//     $stringSum = '';
+//     for ($i = 0; $i < strlen($string); $i++) {
+//         $letter = $string[$i];
+//         $letterNumber = $letterToNumber[$letter];
+//         $stringSum .= $letterNumber;
+//     }
+//     $sum[] = $stringSum;
+// }
+
+// print_r($arr);
+// print_r($sum);
+
+/*Задача 6. Программируем программирование.
+У вас есть список операций: 
+
+Увеличить на (increaseBy) - увеличивает значение на заданное количество
+Уменьшить на  (reduceBy) - уменьшает значение на заданное количество
+Увеличить в (increaseByTimes) - увеличивает значение в заданное количество раз
+Уменьшить в (reduceByTimes) - уменьшает значение в заданное количество раз
+Необходимо:
+
+Собрать список ($operations), представляющий из себя случайную последовательность 5-ти операций;
+Применить последовательность операций ($operations) к числу 10, заданный аргумент каждой операции соответствует порядковому номеру самой операции + 1
+Собрать 2 массива из 10 случайных чисел. Применить к каждому элементу первого массива последовательность операций ($operations), в качестве заданного аргумента каждой операции использовать соответствующий элемент из второго массива. */
+
+$operations = ['increaseBy', 'reduceBy', 'increaseByTimes', 'reduceByTimes'];
+$number = 10;
+
+foreach ($operations as $index => $operation) {
+    if ($operation === 'increaseBy') {
+        $number += $index + 1;
+    } elseif ($operation === 'reduceBy') {
+        $number -= $index + 1;
+    } elseif ($operation === 'increaseByTimes') {
+        $number *= ($index + 1);
+    } elseif ($operation === 'reduceByTimes') {
+        $number /= ($index + 1);
+    }
+}
+
+$array1 = [];
+$array2 = [];
 
 for ($i = 0; $i < 10; $i++) {
-    $randomString = '';
-    for ($j = 0; $j < 3; $j++) {
-        $randomIndex = rand(0, strlen($alphabet) - 1);
-        $randomString .= $alphabet[$randomIndex];
-    }
-    $arr[] = $randomString;
-}
-$letterToNumber = array(
-    'a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'e' => 5, 'f' => 6, 'g' => 7, 'h' => 8, 'i' => 9, 'j' => 10,
-    'k' => 11, 'l' => 12, 'm' => 13, 'n' => 14, 'o' => 15, 'p' => 16, 'q' => 17, 'r' => 18, 's' => 19, 't' => 20,
-    'u' => 21, 'v' => 22, 'w' => 23, 'x' => 24, 'y' => 25, 'z' => 26
-);
-
-$sum = [];
-
-foreach ($arr as $string) {
-    $stringSum = '';
-    for ($i = 0; $i < strlen($string); $i++) {
-        $letter = $string[$i];
-        $letterNumber = $letterToNumber[$letter];
-        $stringSum .= $letterNumber;
-    }
-    $sum[] = $stringSum;
+    $array1[] = rand(1, 100);
+    $array2[] = rand(1, 10);
 }
 
-print_r($arr);
-print_r($sum);
+for ($i = 0; $i < 10; $i++) {
+    $arg = $array2[$i];
+    $operation = $operations[$i];
+    if ($operation === 'increaseBy') {
+        $array1[$i] += $arg;
+    } elseif ($operation === 'reduceBy') {
+        $array1[$i] -= $arg;
+    } elseif ($operation === 'increaseByTimes') {
+        $array1[$i] *= $arg;
+    } elseif ($operation === 'reduceByTimes') {
+        $array1[$i] /= $arg;
+    }
+}
+
+echo "Число после операции: $number\n";
+echo "Массив array1 после операции: " . implode(', ', $array1) . "\n";
