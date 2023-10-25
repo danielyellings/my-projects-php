@@ -86,3 +86,16 @@
 В качестве примера рассмотрим шестизначное число:
 132722 = 13(n) - 2(c) - 7(h) - 22(w) = nchw */
 
+$number = 8187673120;
+$englishAlphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+$numberString = strval($number);
+$result = '';
+for ($i=0; $i<strlen($numberString); $i++) {
+    $currentDigit = intval($numberString[$i]);
+    if ($currentDigit > 0 && $currentDigit <= 26) {
+        $result .= $englishAlphabet[$currentDigit - 1];
+    }
+}
+
+echo $result;
