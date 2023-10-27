@@ -6,6 +6,7 @@ class User
     function __construct($name)
     {
         $this->name = $name;
+        $this->sayHello();
     }
     function sayHello()
     {
@@ -19,7 +20,4 @@ class User
 
 $akim = new User('Аким');
 $gulnaz = new User('Гульназ');
-
-$akim->sayHello();
-$gulnaz->sayHello();
 $akim->letsCode($gulnaz);
