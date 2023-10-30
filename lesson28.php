@@ -18,39 +18,47 @@ for ($i=0; $i<5; $i++) {
     $heroes1[] = getRandomHero();
     $heroes2[] = getRandomHero();
 }
-print_r($heroes1);
-print_r($heroes2);
 
+function filterHeroes($heroes)
+{
+    foreach ($heroes as $key => $hero) {
+        if ($hero['health'] <= 0) {
+            unset($heroes[$key]);
+        }
+    }
+    return $heroes;
+}
+
+function battle($heroes1, $heroes2, $player)
+{
+    echo 'Игрок ' . $player . ' атакует!' . "\n";
+    foreach ($heroes1 as $key1 => $hero1) {
+        foreach ($heroes2 as $key2 => &$hero2) {
+            $hero2['health'] -= $hero1['strength'];
+            echo 'Герой ' . ($key1 + 1) . ' (' . $hero1['health'] . ')  атакует '
+                . ($key2 + 1) . ' (' . $hero2['health'] . ')' . "\n";
+            if ($heroes2['health'] <= 0) {
+                unset($heroes2[$key2]);
+            }
+        }
+    }
+    echo '--------------------------------------------' . "\n";
+
+    return $heroes2;
+}
 
 while (true) {
-    foreach ($heroes1 as $key1 => $hero1) {
-        if ($hero1['health'] <= 0) {
-            unset($heroes1[$key1]);
-        }
-    }
-
-    foreach ($heroes2 as $key2 => $hero2) {
-        if ($hero2['health'] <= 0) {
-            unset($heroes2[$key2]);
-        }
-    }
+    $heroes1 = filterHeroes($heroes1);
+    $heroes2 = filterHeroes($heroes2);
 
     if (count($heroes1) == 0 || count($heroes2) == 0) {
         break;
     }
 
-    foreach ($heroes1 as $hero1) {
-        foreach ($heroes2 as &$hero2) {
-            $hero2['health'] -= $hero1['strength'];
-        }
-    }
-
-    foreach ($heroes2 as $hero2) {
-        foreach ($heroes1 as &$hero1) {
-            $hero1['health'] -= $hero2['strength'];
-        }
-    }
+    $heroes2 = battle($heroes1, $heroes2, 1);
+    $heroes1 = battle($heroes2, $heroes1, 2);
 }
-echo '--------------------------------------------';
+
+
 print_r($heroes1);
 print_r($heroes2);
