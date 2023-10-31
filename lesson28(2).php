@@ -7,6 +7,8 @@ class Hero
     var $health;
     /*Уровень силы */
     var $strength;
+    /** @var Player */
+    var $player;
 
     function __construct($number, $health, $strength)
     {
@@ -14,11 +16,17 @@ class Hero
         $this->health = $health;
         $this->strength = $strength;
     }
+    function setPlayer($player)
+    {
+        $this->player = $player;
+    }
 
     function takeDamage($amount)
     {   
-        var_dump($this);
         $this->health -= $amount;
+        if ($this->health <= 0) {
+            $this->player->removeHero($this);
+        }
     }
     function attack($enemyHero)
     {
@@ -33,7 +41,19 @@ class Player
     var $heroes = [];
     function __construct($heroes)
     {
+        foreach ($heroes as $hero) {
+            $hero->setPlayer($this);
+        }
         $this->heroes = $heroes;
+    }
+
+    function removeHero($diedHero)
+    {
+        foreach ($this->heroes as $key => $hero) {
+            if ($hero === $diedHero) {
+                unset($this->heroes[$key]);
+            }
+        }
     }
 }
 
@@ -52,14 +72,28 @@ class Game
 
     function battle()
     {
-        foreach ($this->player1->heroes as $hero1) {
-            foreach ($this->player2->heroes as $hero2) {
-                $hero1->attack($hero2);
+        while (true) {
+
+            if (! $this->player1->heroes) {
+                echo "Победил игрок 2";
+                break;
             }
-        }
-        foreach ($this->player2->heroes as $hero2) {
+            if (! $this->player2->heroes) {
+                echo "Победил игрок 1";
+                break;
+            }
+
+            echo 'Игрок 1 атакует' . "\n";
             foreach ($this->player1->heroes as $hero1) {
-                $hero2->attack($hero1);
+                foreach ($this->player2->heroes as $hero2) {
+                    $hero1->attack($hero2);
+                }
+            }
+            echo 'Игрок 2 атакует' . "\n";
+            foreach ($this->player2->heroes as $hero2) {
+                foreach ($this->player1->heroes as $hero1) {
+                    $hero2->attack($hero1);
+                }
             }
         }
     }
