@@ -25,16 +25,18 @@ function filterHeroes($heroes)
 function battle($heroes1, $heroes2, $player)
 {
     echo 'Игрок ' . $player . ' атакует!' . "\n";
-    foreach ($heroes1 as $key1 => $hero1) {
+    foreach ($heroes1 as $key1 => &$hero1) {
         foreach ($heroes2 as $key2 => &$hero2) {
-            $hero2 = attackHero($hero1, $hero2);
+            $result = attackHero($hero1, $hero2);
+            $hero1 = $result[0];
+            $hero2 = $result[1];
             if ($hero2['health'] <= 0) {
                 unset($heroes2[$key2]);
             }
         }
     }
     echo '--------------------------------------------' . "\n";
-    return $heroes2;
+    return [$heroes1, $heroes2];
 }
 
 function attackHero($hero1, $hero2)
@@ -50,8 +52,11 @@ function attackHero($hero1, $hero2)
             $hero2['health'] += $Adrenaline;
             echo 'Герой ' . $hero2['number'] . ' вкокол адреналин и получил +' . $Adrenaline . ' к здоровью!!!' . "\n";
         }
+    } else {
+        $hero1['health'] -= $hero2['strength']*0.1;
+        echo 'Герой ' . $hero2['number'] . ' нанес предсмертный удар силой - ' . $hero2['strength']*0.1 . "\n";
     }
-    return $hero2;
+    return [$hero1, $hero2];
 }
 
 $heroes1 = $heroes2 = [];
@@ -75,6 +80,11 @@ while (true) {
         break;
     }
 
-    $heroes2 = battle($heroes1, $heroes2, 1);
-    $heroes1 = battle($heroes2, $heroes1, 2);
+    $result = battle($heroes1, $heroes2, 1);
+    $heroes1 = $result[0];
+    $heroes2 = $result[1];
+    
+    $result = battle($heroes2, $heroes1, 2);
+    $heroes2 = $result[0];
+    $heroes1 = $result[1];
 }
