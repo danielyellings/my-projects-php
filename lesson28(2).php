@@ -5,6 +5,8 @@ class Hero
     var $number;
     /*Уровень здоровья */
     var $health;
+    /*Начальный уровень здоровья */
+    var $originalHealth;
     /*Уровень силы */
     var $strength;
     /** @var Player */
@@ -13,7 +15,7 @@ class Hero
     function __construct($number, $health, $strength)
     {
         $this->number = $number;
-        $this->health = $health;
+        $this->health = $this->originalHealth = $health;
         $this->strength = $strength;
     }
     function setPlayer($player)
@@ -21,20 +23,33 @@ class Hero
         $this->player = $player;
     }
 
-    function takeDamage($amount)
+    function takeDamage($amount, $hero = null)
     {   
         $this->health -= $amount;
         if ($this->health <= 0) {
+            if ($hero !== null) {
+                $hero->takeDamage($this->strength*0.1);
+                echo 'Герой ' . $this->number . ' нанес предсмертный удар силой - '
+                     . $this->strength*0.1 . "\n";
+            }
             $this->player->removeHero($this);
+        } else {
+            $Adrenaline = $this->originalHealth * 0.1;
+            if ($this->health < $Adrenaline) {  
+                $Adrenaline *= 0.5;
+                $this->health += $Adrenaline;
+                echo 'Герой ' . $this->number . ' вкокол адреналин и получил +' . $Adrenaline . ' к здоровью!!!' . "\n";
+            }
         }
-    }
+        }
+
     function attack($enemyHero)
     {
-        $enemyHero->takeDamage($this->strength);
         echo 'Герой ' . $this->number . ' (' . $this->health . ')  атакует '
             . $enemyHero->number . ' (' . $enemyHero->health . ')' . "\n";
+        $enemyHero->takeDamage($this->strength, $this);
+        }
     }
-}
 
 class Player
 {
