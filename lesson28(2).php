@@ -28,9 +28,19 @@ class Hero
         $this->health -= $amount;
         if ($this->health <= 0) {
             if ($hero !== null) {
-                $hero->takeDamage($this->strength*0.1);
-                echo 'Герой ' . $this->number . ' нанес предсмертный удар силой - '
-                     . $this->strength*0.1 . "\n";
+                
+                
+                if (rand(0,1)) {
+                    echo 'Герой ' . $this->number . ' нанес предсмертный удар силой - '
+                                  . $this->strength*0.1 . "\n";
+                    $hero->takeDamage($this->strength*0.1);
+                } else {
+                    echo 'Герой ' . $this->number . ' взорвал гранату силой - '
+                         . $this->strength*2 . "\n";
+                    foreach ($hero->player->heroes as $enemyHero) {
+                        $enemyHero->takeDamage($this->strength * 2);
+                    }
+                }
             }
             $this->player->removeHero($this);
         } else {
@@ -45,11 +55,13 @@ class Hero
 
     function attack($enemyHero)
     {
-        echo 'Герой ' . $this->number . ' (' . $this->health . ')  атакует '
-            . $enemyHero->number . ' (' . $enemyHero->health . ')' . "\n";
-        $enemyHero->takeDamage($this->strength, $this);
+        if ($this->health > 0) {
+            echo 'Герой ' . $this->number . ' (' . $this->health . ')  атакует '
+                . $enemyHero->number . ' (' . $enemyHero->health . ')' . "\n";
+            $enemyHero->takeDamage($this->strength, $this);
         }
     }
+}
 
 class Player
 {
