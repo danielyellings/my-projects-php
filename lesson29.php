@@ -33,3 +33,65 @@ for ($i=0; $i<20; $i++) {
 foreach ($people as $person) {
     echo "{$person->name} {$person->surname} {$person->patronymic}\n";
 }
+
+/**Задача: Создание класса для работы с продуктами
+Создайте класс Product, который представляет продукт в интернет-магазине. У продукта должны быть следующие свойства:
+id (уникальный идентификатор продукта).
+name (название продукта).
+price (цена продукта).
+description (описание продукта).
+Также создайте методы для этого класса:
+getInfo(), который будет выводить информацию о продукте, включая название, цену и описание.
+setPrice($newPrice), который позволит изменить цену продукта.
+setDescription($newDescription), который позволит изменить описание продукта.
+Создайте несколько экземпляров класса Product и продемонстрируйте, как использовать свойства и методы для работы с продуктами.
+
+ */
+
+class Product
+{
+    var $id;
+    var $productName;
+    var $price;
+    var $desciption;
+
+    function __construct($id, $productName, $price, $desciption)
+    {
+        $this->id = $id;
+        $this->productName = $productName;
+        $this->price = $price;
+        $this->desciption = $desciption;
+    }
+
+    function getInfo()
+    {
+        echo "Название: {$this->name}\n";
+        echo "Цена: {$this->price}\n";
+        echo "Описание: {$this->desciption}\n";
+    }
+
+    function setPrice($newPrice)
+    {
+        $this->price = $newPrice;
+    }
+
+    function setDescription($newDescription)
+    {
+        $this->desciption = $newDescription;
+    }
+}
+
+$product1 = new Product($id, $productName, $price, $description);
+$product1->name = 'Смартфон';
+$product1->price = '500';
+$product1->desciption = 'Мощный смартфон с большим экраном.';
+
+/**Выводим инфу о продукте */
+$product1->getInfo();
+// Изменяем цену продукта
+$product1->setPrice(650);
+// Изменяем описание продукта
+$product1->setDescription('Смартфон с отличной камерой.');
+// Выводим обновленную информацию о продукте\
+$product1->getInfo();
+
