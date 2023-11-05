@@ -2,28 +2,28 @@
 
 class Hero
 {
-    var $number;
+    private $number;
     /*Уровень здоровья */
-    var $health;
+    private $health;
     /*Начальный уровень здоровья */
-    var $originalHealth;
+    private $originalHealth;
     /*Уровень силы */
-    var $strength;
+    private $strength;
     /** @var Player */
-    var $player;
+    private $player;
 
-    function __construct($number, $health, $strength)
+    public function __construct($number, $health, $strength)
     {
         $this->number = $number;
         $this->health = $this->originalHealth = $health;
         $this->strength = $strength;
     }
-    function setPlayer($player)
+    public function setPlayer($player)
     {
         $this->player = $player;
     }
 
-    function takeDamage($amount, $hero = null)
+    public function takeDamage($amount, $hero = null)
     {   
         $this->health -= $amount;
         if ($this->health <= 0) {
@@ -37,7 +37,7 @@ class Hero
                 } else {
                     echo 'Герой ' . $this->number . ' взорвал гранату силой - '
                          . $this->strength*2 . "\n";
-                    foreach ($hero->player->heroes as $enemyHero) {
+                    foreach ($hero->player->getHeroes() as $enemyHero) {
                         $enemyHero->takeDamage($this->strength * 2);
                     }
                 }
@@ -53,7 +53,7 @@ class Hero
         }
         }
 
-    function attack($enemyHero)
+    public function attack($enemyHero)
     {
         if ($this->health > 0) {
             echo 'Герой ' . $this->number . ' (' . $this->health . ')  атакует '
@@ -65,8 +65,8 @@ class Hero
 
 class Player
 {
-    var $heroes = [];
-    function __construct($heroes)
+    private $heroes = [];
+    public function __construct($heroes)
     {
         foreach ($heroes as $hero) {
             $hero->setPlayer($this);
@@ -74,7 +74,12 @@ class Player
         $this->heroes = $heroes;
     }
 
-    function removeHero($diedHero)
+    public function getHeroes()
+    {
+        return $this->heroes;
+    }
+
+    public function removeHero($diedHero)
     {
         foreach ($this->heroes as $key => $hero) {
             if ($hero === $diedHero) {
@@ -87,38 +92,38 @@ class Player
 class Game
 {
     /** @var Player  - первый игрок*/
-    var $player1;
+    private $player1;
     /** @var Player - второй игрок */
-    var $player2;
+    private $player2;
 
-    function __construct($player1, $player2)
+    public function __construct($player1, $player2)
     {
         $this->player1 = $player1;
         $this->player2 = $player2;
     }
 
-    function battle()
+    public function battle()
     {
         while (true) {
 
-            if (! $this->player1->heroes) {
+            if (! $this->player1->getHeroes()) {
                 echo "Победил игрок 2";
                 break;
             }
-            if (! $this->player2->heroes) {
+            if (! $this->player2->getHeroes()) {
                 echo "Победил игрок 1";
                 break;
             }
 
             echo 'Игрок 1 атакует' . "\n";
-            foreach ($this->player1->heroes as $hero1) {
-                foreach ($this->player2->heroes as $hero2) {
+            foreach ($this->player1->getHeroes() as $hero1) {
+                foreach ($this->player2->getHeroes() as $hero2) {
                     $hero1->attack($hero2);
                 }
             }
             echo 'Игрок 2 атакует' . "\n";
-            foreach ($this->player2->heroes as $hero2) {
-                foreach ($this->player1->heroes as $hero1) {
+            foreach ($this->player2->getHeroes() as $hero2) {
+                foreach ($this->player1->getHeroes() as $hero1) {
                     $hero2->attack($hero1);
                 }
             }
