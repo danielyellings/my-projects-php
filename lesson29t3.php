@@ -18,28 +18,25 @@ foreach ($masti as $mast) {
 
 shuffle($kolodaKart);
 
-// Выбираем случайную масть как козырь
+
 $kozir = $masti[array_rand($masti)];
 echo "Козырь: $kozir\n";
 
 $players = ['Player1', 'Player2', 'Player3', 'Player4'];
 $razdacha = [];
 
-// Раздаем карты игрокам
+
 for ($i = 0; $i < count($players); $i++) {
     $razdacha[$players[$i]] = array_slice($kolodaKart, 0, 6);
 }
 
 $kozirCounts = [];
-
-// Подсчитываем количество козырей у каждого игрока
 foreach ($players as $player) {
     $kozirCounts[$player] = 0;
     foreach ($razdacha[$player] as $card) {
-        // Получаем масть карты (последний символ)
-        $masti = substr($card, -5); // <<<< Изменил эту строку
+        $masti = substr($card, -5); 
 
-        // Проверяем, является ли масть козырем
+        // является ли масть козырем
         if ($masti === $kozir) {
             $kozirCounts[$player]++;
         }
@@ -49,7 +46,6 @@ foreach ($players as $player) {
 $maxKozirPlayer = '';
 $maxKozirCount = 0;
 
-// Определяем игрока с наибольшим количеством козырей
 foreach ($players as $player) {
     if ($kozirCounts[$player] > $maxKozirCount) {
         $maxKozirCount = $kozirCounts[$player];
