@@ -1,6 +1,11 @@
 <?php
 
-class Hero
+interface FightableInterface
+{
+    public function takeDamage($amount, $hero = null);
+    public function attack($hero);
+}
+class Hero implements FightableInterface
 {
     private $number;
     /*Уровень здоровья */
