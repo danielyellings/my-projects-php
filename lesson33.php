@@ -137,4 +137,26 @@ class Audience
     }
 }
 
+class Theater
+{
+    private $performance;
+    private $audience = [];
 
+    public function __construct($performance)
+    {
+        $this->performance = $performance;
+    }
+
+    public function addAudience($audience)
+    {
+        $this->audience[] = $audience;
+    }
+
+    public function startTheater()
+    {
+        $this->performance->startPerformance();
+        foreach ($this->audience as $audience) {
+            $audience->applaud();
+        }
+    }
+}   
