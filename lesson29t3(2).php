@@ -41,14 +41,17 @@ foreach ($suits as $suit) {
     }
 }
 
-$player1 = new Player('Бывалый');
-$player2 = new Player('Безыменянный');
+shuffle($cards);
+
+$players = [new Player('Бывалый'), new Player('Безыменянный')];
+
 $i = 0;
 foreach ($cards as $card) {
-    if ($i%2==0) {
-        $player1->setCard($card);
-    } else {
-        $player2->setCard($card);
+    $players[$i%2]->setCard($card);
+    if ($i == 11) {
+        break;
     }
     $i++;
 }
+
+var_dump($players);
