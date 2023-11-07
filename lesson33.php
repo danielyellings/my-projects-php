@@ -160,3 +160,22 @@ class Theater
         }
     }
 }   
+
+$performance = new Performance();
+$puppeteer = new Puppeteer('мужской', 'бас', '8');
+$puppeteer->addPuppet(new Puppet('марионетка', 'женский', 5, 'красный', 'Привет, мир!'));
+$puppeteer->addPuppet(new Puppet('кукла-карлик', 'мужской', 7, 'синий', 'Здравствуй, дружок!'));
+
+$actor = new Actor('женский', 25, 'Давайте начнем спектакль!');
+
+$performance->addToQueue($puppeteer);
+$performance->addToQueue($actor);
+
+$audience1 = new Audience('Браво!');
+$audience2 = new Audience('На бис Иу!');
+
+$theater = new Theater($performance);
+$theater->addAudience($audience1);
+$theater->addAudience($audience2);
+
+$theater->startTheater();
