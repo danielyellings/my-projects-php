@@ -86,3 +86,55 @@ class Puppeteer implements PerformInterface
     }
 }
 
+class Actor implements PerformInterface
+{
+    private $gender;
+    private $age;
+    private $text;
+
+    public function __construct($gender, $age, $text)
+    {
+        $this->gender = $gender;
+        $this->age = $age;
+        $this->text = $text;
+    }
+
+    public function perform()
+    {
+        echo "Актер выступает: " . $this->text . "\n";
+    }
+}
+
+class Performance
+{
+    private $queue = [];
+
+    public function addToQueue(PerformInterface $performer)
+    {
+        $this->queue[] = $performer;
+    }
+
+    public function startPerformance()
+    {
+        foreach ($this->queue as $performer) {
+            $performer->perform();
+        }
+    }
+}
+
+class Audience
+{
+    private $reaction;
+
+    public function __construct($reaction)
+    {
+        $this->reaction = $reaction;
+    }
+
+    public function applaud()
+    {
+        echo "Зрители реагируют: " . $this->reaction . "\n";
+    }
+}
+
+
