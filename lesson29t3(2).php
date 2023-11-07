@@ -1,5 +1,17 @@
 <?php
-
+class Suit
+{
+    private $isTrump = false;
+    private $type;
+    public function __construct($type)
+    {
+        $this->type = $type;
+    }
+    public function setTrump($trump)
+    {
+        $this->isTrump = $trump;
+    }
+}
 class Card
 {
     private $rang;
@@ -11,6 +23,10 @@ class Card
         $this->rang = $rang;
         $this->label = $label;
         $this->suit = $suit;
+    }
+    public function getSuit()
+    {
+        return $this->suit;
     }
 }
 
@@ -26,6 +42,14 @@ class Player
     public function setCard($card)
     {
         $this->cards[] = $card;
+    }
+    public function getRang()
+    {
+        return $this->rang;
+    }
+    public function setRang($rang)
+    {
+        $this->rang = $rang;
     }
 }
 
@@ -53,5 +77,7 @@ foreach ($cards as $card) {
     }
     $i++;
 }
+
+echo $cards[++$i]->getSuit();
 
 var_dump($players);
