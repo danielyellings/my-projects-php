@@ -11,6 +11,10 @@ class Suit
     {
         $this->isTrump = $trump;
     }
+    public function isTrump()
+    {
+        return $this->isTrump;
+    }
 }
 class Card
 {
@@ -28,6 +32,14 @@ class Card
     {
         return $this->suit;
     }
+    public function getRang()
+    {
+        $level = 0;
+        if ($this->suit->isTrump()) {
+            $level = 10;
+        }
+        return $this->rang + $level;
+    }
 }
 
 class Player
@@ -43,13 +55,13 @@ class Player
     {
         $this->cards[] = $card;
     }
-    public function getRang()
+    public function calc()
     {
-        return $this->rang;
-    }
-    public function setRang($rang)
-    {
-        $this->rang = $rang;
+        $power = 0;
+        foreach ($this->cards as $card) {
+            $power += $card->getRang();
+        }
+        return $power;
     }
 }
 
@@ -57,7 +69,7 @@ $rangs = [
     '6', '7', '8', '9', '10', 'V', 'D', 'K', 'T',
 ];
 
-$suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+$suits = [new Suit('hearts'), new Suit('diamonds'), new Suit('clubs'), new Suit('spades')];
 $cards = [];
 foreach ($suits as $suit) {
     foreach ($rangs as $rang => $label) {
@@ -78,6 +90,15 @@ foreach ($cards as $card) {
     $i++;
 }
 
-echo $cards[++$i]->getSuit();
+$trumpSuit = $cards[$i++]->getSuit();
+$trumpSuit->setTrump(true);
+
+var_dump([
+    $players[0]->calc(),
+    $players[1]->calc(),
+]);
+
+
+var_dump($trumpSuit);
 
 var_dump($players);
