@@ -36,10 +36,15 @@ function getMaxPage($page)
     $pattern = '/<a.+?href="\/restaurant\?page=([0-9]+)">[0-9]+<\/a>/u';
     $result = [];
     preg_match_all($pattern, $subject, $result);
-    return max($result[1]);
+    $max = max($result[1]);
+    if ($max <= $page) {
+        return $page;
+    } else {
+        return getMaxPage($max);
+    }
 }
 
-echo getMaxPage(7);
+echo getMaxPage(10);
 
 
 //print_r(getRestsFromPage(10));
