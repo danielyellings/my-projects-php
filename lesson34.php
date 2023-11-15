@@ -52,7 +52,7 @@ for ($i=1; $i<=$max; $i++) {
 }
 
 $host = '127.0.0.1';
-$db   = 'test';
+$db   = 'db_rests';
 $user = 'root';
 $pass = '';
 $charset = 'utf8';
