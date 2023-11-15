@@ -63,8 +63,8 @@ $opt = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES   => false,
 ];
-# I Connection to DB
 
+# I Connection to DB
 $pdo = new PDO($dsn, $user, $pass, $opt);
 
 # II Preparation of request
@@ -84,3 +84,12 @@ $stmt = $pdo->prepare("
             :options
         )
 ");
+# III Execution of request
+$stmt->execute([
+    ':name' => 'GasTreat',
+    ':link' => 'gastreat.com',
+    ':cuisine' => 'Kazakh Russian English Chinese Thai',
+    ':price' => '20000',
+    ':options' => 'WiFi coffee bar',
+]);
+
