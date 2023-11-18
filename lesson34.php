@@ -57,6 +57,7 @@ $user = 'root';
 $pass = '';
 $charset = 'utf8';
 
+
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $opt = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -86,10 +87,10 @@ $stmt = $pdo->prepare("
 ");
 # III Execution of request
 $stmt->execute([
-    ':name' => 'GasTreat',
-    ':link' => 'gastreat.com',
-    ':cuisine' => 'Kazakh Russian English Chinese Thai',
-    ':price' => '20000',
-    ':options' => 'WiFi coffee bar',
-]);
+        ':name' => 'recoursia',
+        ':link' => 'recoursia.kz',
+        ':cuisine' => 'PHP Linux Nginx HTML JS CSS',
+        ':price' => '260000',
+        ':options' => 'Wifi coffee',
+    ]);
 
