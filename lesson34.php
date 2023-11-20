@@ -50,8 +50,8 @@ foreach ($rests as $rest) {
     $stmt->execute([
             ':name' => $rest['name'],
             ':link' => $rest['link'],
-            ':cuisine' => isset($rest['cuisine']) ?? '',
-            ':price' => isset($rest['price']) ?? '',
+            ':cuisine' => isset($rest['cuisine']) ? $rest['cuisine'] : '',
+            ':price' => isset($rest['price']) ? $rest['price'] : '',
             ':options' => isset($rest['options']) ? $rest['options'] : '',
         ]);
 }
