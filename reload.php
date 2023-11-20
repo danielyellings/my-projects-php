@@ -5,20 +5,17 @@ include './db.php';
 
 $pdo = getPDO();
 $rests = [];
-$types = [
-    [
-        'type' => 'restaurant',
-        'label' => 'Рестораны',
-    ],
-    [
-        'type' => 'pub',
-        'label' => 'Пабы, бары',
-    ],
-    [
-        'type' => 'cafe',
-        'label' => 'Кафе',
-    ],
-];
+
+$stmt = $pdo->prepare("
+    SELECT
+        *
+    FROM
+        `categories`
+");
+
+$stmt->execute();
+
+$types = $stmt->fetchAll();
 
 foreach ($types as $type) {
     $max = getMaxPage($type['type'], 1);
@@ -30,10 +27,10 @@ foreach ($types as $type) {
 foreach ($rests as &$rest) {
     foreach ($types as $type) {
         if ($type['type'] == $rest['category']) {
-            $label = $type['label'];
+            $id = $type['id'];
         }
     }
-    $rest['category'] = $label;
+    $rest['category'] = $id;
 }
 
 print_r($rests);
