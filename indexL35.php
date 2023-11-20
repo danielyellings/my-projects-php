@@ -11,8 +11,14 @@ $stmt = $pdo->prepare("
         *
     FROM
         `rests`
+    WHERE
+        (`price_min`+`price_max`)/2 > :min
+        AND (`price_min`+`price_max`)/2 < :max
 ");
 
 # III - Execution
-$stmt->execute();
-var_dump($stmt->fetchAll());
+$stmt->execute([
+    ':min' => 10000,
+    ':max' => 20000
+]);
+print_r($stmt->fetchAll());
