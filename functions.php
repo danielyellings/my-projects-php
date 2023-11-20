@@ -1,15 +1,15 @@
 <?php
 
-function getRestsFromPage($page)
+function getRestsFromPage($type, $page)
 {
-    $subject = file_get_contents('https://restoran.kz/restaurant?page=' . $page);
+    $subject = file_get_contents('https://restoran.kz/' . $type .'?page=' . $page);
     $pattern = '/<div class="mb-5">/u';
     $blocks = preg_split($pattern, $subject);
     unset($blocks[0]);
 
     $rests = [];
     foreach ($blocks as $block) {
-        $pattern = '/<a class="link-inherit-color" href="(.+?)">(.+?)<\/a>/u';
+        $pattern = '/<a class="link-inherit-color" href="(\/.{1,}?\/.{1,}?)">(.{1,}?)<\/a>/u';
         $result = [];
         preg_match_all($pattern, $block, $result);
 
@@ -53,23 +53,24 @@ function getRestsFromPage($page)
                 'max' => 0,
             ];
         }
+        $rest['category'] = $type;
         $rests[] = $rest;
     }
 
     return $rests;
 }
 
-function getMaxPage($page)
+function getMaxPage($type,$page)
 {
-    return 2;
-    $subject = file_get_contents('https://restoran.kz/restaurant?page=' . $page);
-    $pattern = '/<a.+?href="\/restaurant\?page=([0-9]+)">[0-9]+<\/a>/u';
+    return 1;
+    $subject = file_get_contents('https://restoran.kz/' . $type . '?page=' . $page);
+    $pattern = '/<a.+?href="\/' . $type . '\?page=([0-9]+)">([0-9]+)<\/a>/u';
     $result = [];
     preg_match_all($pattern, $subject, $result);
     $max = max($result[1]);
     if ($max <= $page) {
         return $page;
     } else {
-        return getMaxPage($max);
+        return getMaxPage($type, $max);
     }
 }
