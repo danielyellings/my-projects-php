@@ -41,7 +41,7 @@ function getRestsFromPage($page)
 
 function getMaxPage($page)
 {
-    return 2;
+    // return 2;
     $subject = file_get_contents('https://restoran.kz/restaurant?page=' . $page);
     $pattern = '/<a.+?href="\/restaurant\?page=([0-9]+)">[0-9]+<\/a>/u';
     $result = [];

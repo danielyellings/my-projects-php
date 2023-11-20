@@ -3,6 +3,8 @@
 include './functions.php';
 include './db.php';
 
+$pdo = getPDO();
+
 $max = getMaxPage(1);
 $rests = [];
 for ($i=1; $i<=$max; $i++) {
@@ -29,7 +31,6 @@ $stmt = $pdo->prepare("
         )
 ");
 # III Execution of request
-print_r($rests);
 foreach ($rests as $rest) {
     $stmt->execute([
             ':name' => $rest['name'],
