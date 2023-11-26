@@ -17,7 +17,7 @@ function getRestsFromPage($type, $page)
             'name' => $result[2][0],
             'link' => $result[1][0],
         ];
-        $pattern = '/<li class="d-flex mr-5 mb-3"><svg class="icon icon_md flex-none mr-3" aria-hidden="true"><use xlink:href="(.+?)"><\/use><\/svg>(.+?)<\/li>/u';
+        $pattern = '/<li class="d-flex mr-5 mb-3"><svg class="icon icon_md flex-none mr-3" aria-hidden="true"><use xlink:href="(.{1,}?)"><\/use><\/svg>(.+?)<\/li>/u';
         $result = [];
         preg_match_all($pattern, $block, $result);
 
@@ -53,6 +53,9 @@ function getRestsFromPage($type, $page)
                 'max' => 0,
             ];
         }
+
+        $rest['cuisine'] = preg_split('/, /', $rest['cuisine'] ?? '');
+
         $rest['category'] = $type;
         $rests[] = $rest;
     }

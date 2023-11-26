@@ -33,7 +33,15 @@ foreach ($rests as &$rest) {
     $rest['category'] = $id;
 }
 
-print_r($rests);
+
+$cuisines = [];
+foreach ($rests as $rest)  {
+    $cuisines = array_merge($cuisines, $rest['cuisine'] ?? []);
+}
+
+$cuisines = array_unique($cuisines);
+
+print_r($cuisines);
 
 $stmt = $pdo->prepare("TRUNCATE TABLE `rests`");
 $stmt->execute();
