@@ -39,9 +39,26 @@ foreach ($rests as $rest)  {
     $cuisines = array_merge($cuisines, $rest['cuisine'] ?? []);
 }
 
-$cuisines = array_unique($cuisines);
-
+$cuisines = array_unique($cuisines); /**убирает одинаковые элементы из массива */
 print_r($cuisines);
+
+$stmt = $pdo->prepare("TRUNCATE TABLE `cuisines`");
+$stmt->execute();
+
+$stmt = $pdo->prepare("
+    INSERT INTO
+        `cuisines` (
+            `name`
+        ) VALUES (
+            :name
+        )
+");
+
+foreach ($cuisines as $cuisine) {
+    $stmt->execute([
+        ':name' => $cuisine, 
+    ]);
+}
 
 $stmt = $pdo->prepare("TRUNCATE TABLE `rests`");
 $stmt->execute();
@@ -55,7 +72,6 @@ $stmt = $pdo->prepare("
             `link`,
             `price_min`,
             `price_max`,
-            `cuisine`,
             `options`
         ) VALUES (
             :category,
@@ -63,7 +79,6 @@ $stmt = $pdo->prepare("
             :link,
             :price_min,
             :price_max,
-            :cuisine,
             :options
         )
 ");
@@ -73,7 +88,6 @@ foreach ($rests as $rest) {
             ':category' => $rest['category'],
             ':name' => $rest['name'],
             ':link' => $rest['link'],
-            ':cuisine' => isset($rest['cuisine']) ? $rest['cuisine'] : '',
             ':price_min' => $rest['price']['min'],
             ':price_max' => $rest['price']['max'],
             ':options' => isset($rest['options']) ? $rest['options'] : '',
